@@ -161,12 +161,16 @@ class PlainteController extends Controller
             'titre' => 'Nouvelle plainte',
             'titreDossier' => $request->titreDossier,
             'user' => $personnelCharger->nomPersonnel.' '.$personnelCharger->prenomPersonnel.' est charger du dossier',
-            'actionURL' => url('/dossier/'.$dossier_id->id.''),
+            'date' => now(),
+            'dossiers_id' => $dossier_id->id,
         ];
 
         //send notification
         $personnelCharger->notify(new AlertNotification($data));
-        $personnelChargerDG->notify(new AlertNotification($data));
+        foreach ($personnelChargerDG as $personnelChargerDG) {
+            $personnelChargerDG->notify(new AlertNotification($data));
+        }
+        //$personnelChargerDG->notify(new AlertNotification($data));
 
         /*
         $notification = new Notification();

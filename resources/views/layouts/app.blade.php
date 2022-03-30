@@ -127,7 +127,7 @@
     @yield('content-js')
 
     <script type="text/javascript">
-
+        /*
         $(document).ready(function () {
 
             setInterval(function(){
@@ -153,7 +153,7 @@
 
 
         });
-
+        */
     </script>
 
     </body>

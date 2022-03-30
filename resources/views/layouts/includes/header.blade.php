@@ -36,7 +36,7 @@
                                                 <li class="nav-item"><a href="{{ route('u_notification') }}" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i>
                                                 <span class = "badge badge-pill badge-warnig" style = "vertical-align: inherit;">
                                                     <font style="vertical-align: inherit;" class="number">
-                                                        0
+                                                        {{ count(auth()->user()->notifications) }}
                                                     </font>
                                                 </span></a>
                                                     <div role="menu" class="notification-author dropdown-menu animated zoomIn">
@@ -44,14 +44,14 @@
                                                             <h1>Notifications</h1>
                                                         </div>
                                                         <ul class="notification-menu">
-                                                            @foreach($notifications as $notification)
+                                                            @foreach(auth()->user()->notifications as $notification) <!--unreadNotifications-->
                                                             <li>
                                                                 <a href="{{ route('v_dossier', ['id'=> 1]) }}">
                                                                     <div class="message-content">
-                                                                        <h5>Nouveau dossier</h5>
-                                                                        <span class="message-date">Date d'ouverture : {{ $notification->dateOuvertureDossier }}</span>
-                                                                        <p>Titre : {{ $notification->titreDossier }}</p>
-                                                                        <p>Avocat : {{ $notification->nomPersonnel }} {{ $notification->prenomPersonnel }}</p>
+                                                                        <h5>{{ $notification->data['data']['titre'] }}</h5>
+                                                                        <span class="message-date">Date d'ouverture : {{ $notification->data['data']['date'] }}</span>
+                                                                        <p>Titre : {{ $notification->data['data']['titreDossier'] }}</p>
+                                                                        <p>Avocat : {{ $notification->data['data']['user'] }}</p>
                                                                     </div>
                                                                 </a>
                                                             </li>
