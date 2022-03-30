@@ -285,3 +285,5 @@ Route::get('/c_notification', [NotificationController::class, 'countNotification
 
 //update Notification
 Route::get('/u_notification', [NotificationController::class, 'updateNotification'])->name('u_notification');
+
+Route::get('send', [HomeController::class,'sendNotification']);

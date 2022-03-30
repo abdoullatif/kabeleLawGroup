@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\AlertNotification;
 
 class NotificationController extends Controller
 {
@@ -63,4 +64,44 @@ class NotificationController extends Controller
 
         //return redirect()->route('notification.index');
     }
+
+    //
+    public function sendNotification()
+    {
+        if( auth()->check() ){
+
+            if(auth()->user()){
+
+                //let user
+                $user = User::first();
+
+                //send notification
+                auth()->user()->notify(new AlertNotification($user));
+
+            }
+
+        }
+        else{
+            return redirect("/")->withErrors('Session Deconnecter, Veuillez vous connecter');
+        }
+        
+
+  
+        $details = [
+            'greeting' => 'Hi Artisan',
+            'body' => 'This is my first notification from Nicesnippests.com',
+            'thanks' => 'Thank you for using Nicesnippests.com tuto!',
+            'actionText' => 'View My Site',
+            'actionURL' => url('/'),
+            'order_id' => 101
+        ];
+  
+        //Notification::send($user, new AlertNotification($details));
+   
+        //dd('done');
+        //$user->notify(new AlertNotification($details));
+        //dd($user->notifications);
+    }
+
+
 }

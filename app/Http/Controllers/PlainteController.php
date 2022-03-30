@@ -11,6 +11,7 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Models\Comptabilites;
 use App\Models\Notifications;
+use App\Notifications\AlertNotification;
 
 class PlainteController extends Controller
 {
@@ -150,15 +151,41 @@ class PlainteController extends Controller
         ]);
 
         //Notification Personnel
+        $personnelCharger = User::find($request->User);
 
+        //Notification DG
+        $personnelChargerDG = User::where('fonctionPersonnel', '=', 'DG')->get();
+
+        //Note
+        $data = [
+            'titre' => 'Nouvelle plainte',
+            'titreDossier' => $request->titreDossier,
+            'user' => $personnelCharger->nomPersonnel.' '.$personnelCharger->prenomPersonnel.' est charger du dossier',
+            'actionURL' => url('/dossier/'.$dossier_id->id.''),
+        ];
+
+        //send notification
+        $personnelCharger->notify(new AlertNotification($data));
+        $personnelChargerDG->notify(new AlertNotification($data));
+
+        /*
+        $notification = new Notification();
+        $notification->type = "Plainte";
+        $notification->description = "Une nouvelle plainte a été créer";
+        $notification->users_id = $request->User;
+        $notification->save();*/
+
+
+
+        /*
         Notifications::create([
             "statutNotification"=>"0",
             "dossiers_id"=>$dossier_id->id,
             "users_id"=>$request->User,
-        ]);
+        ]);*/
 
         //Notification DG
-
+        /*
         if ($DG->count() > 0) {
             foreach ($DG as $dg) {
                 Notifications::create([
@@ -167,7 +194,7 @@ class PlainteController extends Controller
                     "users_id"=>$dg->id,
                 ]);
             }
-        }
+        }*/
         
         /*
         Notifications::create([
